@@ -10,18 +10,17 @@ function Home() {
   return (
       <div>
           <div className="text-2xl text-primary w-full h-full flex justify-center content-center">
-              <h1>This is a test</h1>
+              <h1>UNDER CONSTRUCTION</h1>
           </div>
           <Collapsible>
               <CollapsibleTrigger className="bg-primary text-primary-foreground rounded-xl  p-4">
                   <div className="flex items-center justify-center">
-                      Can I use this in my project? <ChevronDown className="" />
+                      Test collapse <ChevronDown className="" />
                   </div>
 
               </CollapsibleTrigger>
               <CollapsibleContent>
-                  Yes. Free to use for personal and commercial projects. No attribution
-                  required.
+                  A bunch of text
               </CollapsibleContent>
           </Collapsible>
       </div>
