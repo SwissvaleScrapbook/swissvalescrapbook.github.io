@@ -1,61 +1,108 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
 
 /* ============================================================
    index.css — WCAG 2.1 Compliant Design System
-   Fonts: Playfair Display (headings) · Inter (body)
+   Fonts: Playfair Display (headings) · Inter (body + shadcn buttons)
    ============================================================
 
-   CONTRAST AUDIT (against --color-bg: #F9F8F6):
-   --color-primary (#134479): ~13.8:1 → AAA ✅ all text sizes
-   --color-accent  (#39B54B): ~4.9:1  → AA  ✅ normal text (≥4.5:1)
-                                         AAA ✅ large/bold text (≥3:1)
-                              ⚠️  Does NOT meet AAA for normal text.
-                              Use for large text, UI components, and
-                              decorative elements; avoid for small body copy.
+   CONTRAST AUDIT (against background: #F9F8F6):
+   --primary (#134479): ~13.8:1 → AAA ✅ all text sizes
+   --secondary (#39B54B): ~4.9:1 → AA ✅ normal text (≥4.5:1)
+                           ⚠️  Does NOT meet AAA for normal text.
+                           Use for large text, UI components, decorative
+                           elements; avoid for small body copy.
    ============================================================ */
 
-/* ── Reset ───────────────────────────────────────────────── */
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-/* ── Design Tokens ───────────────────────────────────────── */
+/* ── shadcn/ui Theme Variables ───────────────────────────── */
 :root {
-    /* Brand */
-    --color-primary:       #134479; /* AAA on bg — use freely */
-    --color-primary-dark:  #0d3060; /* deeper shade for hover states */
-    --color-primary-light: #1a5799; /* lighter tint */
-    --color-accent:        #39B54B; /* AA on bg — large text & UI only */
-    --color-accent-dark:   #2a8e39; /* darker green ~6.8:1 → AA+ on bg */
+    /* shadcn semantic tokens — mapped to your brand colors */
+    --background: rgb(249 248 246);        /* warm off-white */
+    --foreground: rgb(26 25 22);           /* ~17:1 on bg ✅ AAA */
+    --card: rgb(255 255 255);
+    --card-foreground: rgb(26 25 22);
+    --popover: rgb(255 255 255);
+    --popover-foreground: rgb(26 25 22);
+    --primary: rgb(19 68 121);             /* #134479 — AAA ✅ */
+    --primary-foreground: rgb(255 255 255);
+    --secondary: rgb(57 181 75);           /* #39B54B — AA ✅ */
+    --secondary-foreground: rgb(255 255 255);
+    --muted: rgb(245 245 245);
+    --muted-foreground: rgb(110 107 103);  /* ~5.5:1 ✅ AA */
+    --accent: rgb(240 239 237);
+    --accent-foreground: rgb(26 25 22);
+    --destructive: rgb(192 57 43);         /* ~5.9:1 ✅ AA */
+    --border: rgb(216 214 210);
+    --input: rgb(216 214 210);
+    --ring: rgb(19 68 121);
+    --chart-1: rgb(245 73 0);
+    --chart-2: rgb(0 150 137);
+    --chart-3: rgb(16 78 100);
+    --chart-4: rgb(255 185 0);
+    --chart-5: rgb(254 154 0);
+    --sidebar: rgb(250 250 248);
+    --sidebar-foreground: rgb(26 25 22);
+    --sidebar-primary: rgb(19 68 121);
+    --sidebar-primary-foreground: rgb(250 250 250);
+    --sidebar-accent: rgb(240 239 237);
+    --sidebar-accent-foreground: rgb(26 25 22);
+    --sidebar-border: rgb(216 214 210);
+    --sidebar-ring: rgb(19 68 121);
 
-    /* Neutrals */
-    --color-bg:            #F9F8F6; /* off-white, warm */
-    --color-surface:       #FFFFFF;
-    --color-surface-alt:   #F0EFed;
-    --color-border:        #D8D6D2;
-    --color-border-strong: #B0ADA8;
+    /* Font stacks — Inter for UI/body, Playfair for headings */
+    --font-sans:  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    --font-mono:  'Fira Code', 'Cascadia Code', ui-monospace, 'Consolas', monospace;
 
-    /* Text — all pass AAA on --color-bg */
-    --color-text:          #1A1916; /* primary text   ~17:1 */
-    --color-text-secondary:#4A4845; /* secondary text ~8.5:1 */
-    --color-text-muted:    #6E6B67; /* muted text     ~5.5:1 — AA only */
-    --color-text-on-primary: #FFFFFF; /* white on #134479 ~14:1 ✅ */
-    --color-text-on-accent:  #FFFFFF; /* white on #39B54B ~4.9:1 ✅ AA */
+    /* Base radius (shadcn uses this to derive component radii) */
+    --radius: 0.625rem;
 
-    /* Focus — visible ring for keyboard nav */
-    --color-focus:         #134479;
-    --focus-ring:          0 0 0 3px rgba(19, 68, 121, 0.45);
+    /* shadcn shadow scale */
+    --shadow-2xs: 0 1px 3px 0px rgb(0 0 0 / 0.05);
+    --shadow-xs:  0 1px 3px 0px rgb(0 0 0 / 0.05);
+    --shadow-sm:  0 1px 3px 0px rgb(0 0 0 / 0.10), 0 1px 2px -1px rgb(0 0 0 / 0.10);
+    --shadow:     0 1px 3px 0px rgb(0 0 0 / 0.10), 0 1px 2px -1px rgb(0 0 0 / 0.10);
+    --shadow-md:  0 1px 3px 0px rgb(0 0 0 / 0.10), 0 2px 4px -1px rgb(0 0 0 / 0.10);
+    --shadow-lg:  0 1px 3px 0px rgb(0 0 0 / 0.10), 0 4px 6px -1px rgb(0 0 0 / 0.10);
+    --shadow-xl:  0 1px 3px 0px rgb(0 0 0 / 0.10), 0 8px 10px -1px rgb(0 0 0 / 0.10);
+    --shadow-2xl: 0 1px 3px 0px rgb(0 0 0 / 0.25);
+
+    /* ── Custom design tokens (extend shadcn) ──────────────── */
+
+    /* Brand aliases for direct use in custom components */
+    --color-primary:         rgb(19 68 121);   /* #134479 — AAA */
+    --color-primary-dark:    rgb(13 48 96);    /* hover state */
+    --color-primary-light:   rgb(26 87 153);
+    --color-accent:          rgb(57 181 75);   /* #39B54B — AA */
+    --color-accent-dark:     rgb(42 142 57);   /* #2a8e39 ~6.8:1 AA+ for text */
+
+    /* Semantic surface colors */
+    --color-bg:              rgb(249 248 246);
+    --color-surface:         rgb(255 255 255);
+    --color-surface-alt:     rgb(240 239 237);
+    --color-border:          rgb(216 214 210);
+    --color-border-strong:   rgb(176 173 168);
+
+    /* Text colors — WCAG verified */
+    --color-text:            rgb(26 25 22);    /* ~17:1 ✅ AAA */
+    --color-text-secondary:  rgb(74 72 69);    /* ~8.5:1 ✅ AAA */
+    --color-text-muted:      rgb(110 107 103); /* ~5.5:1 ✅ AA */
+    --color-text-on-primary: rgb(250 250 250); /* ~14:1 ✅ AAA */
+    --color-text-on-accent:  rgb(255 255 255); /* ~4.9:1 ✅ AA */
+
+    /* Focus */
+    --color-focus: rgb(19 68 121);
+    --focus-ring:  0 0 0 3px rgba(19, 68, 121, 0.45);
 
     /* Typography */
     --font-heading: 'Playfair Display', Georgia, 'Times New Roman', serif;
     --font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
-    /* Type Scale (fluid using clamp) */
+    /* Type Scale (fluid clamp) */
     --text-xs:   clamp(0.694rem,  0.67rem  + 0.12vw, 0.75rem);
     --text-sm:   clamp(0.833rem,  0.80rem  + 0.17vw, 0.875rem);
     --text-base: clamp(1rem,      0.96rem  + 0.2vw,  1.0625rem);
@@ -87,29 +134,141 @@
     --container-xl:  1280px;
     --container-2xl: 1440px;
 
-    /* Radius */
-    --radius-sm:   4px;
-    --radius-md:   8px;
-    --radius-lg:   12px;
-    --radius-xl:   16px;
+    /* Radius aliases */
+    --radius-sm:   calc(var(--radius) - 4px);   /* ~6px */
+    --radius-md:   calc(var(--radius) - 2px);   /* ~8px */
+    --radius-lg:   var(--radius);               /* 10px */
+    --radius-xl:   calc(var(--radius) + 4px);   /* ~14px */
     --radius-full: 9999px;
 
-    /* Shadows */
-    --shadow-sm:  0 1px 3px rgba(19, 68, 121, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
-    --shadow-md:  0 4px 12px rgba(19, 68, 121, 0.10), 0 2px 4px rgba(0, 0, 0, 0.06);
-    --shadow-lg:  0 10px 30px rgba(19, 68, 121, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
-    --shadow-xl:  0 20px 50px rgba(19, 68, 121, 0.15), 0 8px 16px rgba(0, 0, 0, 0.08);
-
     /* Transitions */
-    --transition-fast:   150ms ease;
-    --transition-base:   250ms ease;
-    --transition-slow:   400ms ease;
+    --transition-fast: 150ms ease;
+    --transition-base: 250ms ease;
+    --transition-slow: 400ms ease;
 
     /* Line heights */
-    --leading-tight:  1.2;
-    --leading-snug:   1.35;
-    --leading-normal: 1.6;
-    --leading-relaxed:1.75;
+    --leading-tight:   1.2;
+    --leading-snug:    1.35;
+    --leading-normal:  1.6;
+    --leading-relaxed: 1.75;
+}
+
+/* ── shadcn Dark Mode ────────────────────────────────────── */
+.dark {
+    --background: rgb(10 10 10);
+    --foreground: rgb(250 250 250);
+    --card: rgb(23 23 23);
+    --card-foreground: rgb(250 250 250);
+    --popover: rgb(23 23 23);
+    --popover-foreground: rgb(250 250 250);
+    --primary: rgb(229 229 229);
+    --primary-foreground: rgb(23 23 23);
+    --secondary: rgb(38 38 38);
+    --secondary-foreground: rgb(250 250 250);
+    --muted: rgb(38 38 38);
+    --muted-foreground: rgb(161 161 161);
+    --accent: rgb(38 38 38);
+    --accent-foreground: rgb(250 250 250);
+    --destructive: rgb(255 100 103);
+    --border: rgb(255 255 255 / 0.1);
+    --input: rgb(255 255 255 / 0.15);
+    --ring: rgb(115 115 115);
+    --chart-1: rgb(20 71 230);
+    --chart-2: rgb(0 188 125);
+    --chart-3: rgb(254 154 0);
+    --chart-4: rgb(173 70 255);
+    --chart-5: rgb(255 32 86);
+    --sidebar: rgb(23 23 23);
+    --sidebar-foreground: rgb(250 250 250);
+    --sidebar-primary: rgb(20 71 230);
+    --sidebar-primary-foreground: rgb(250 250 250);
+    --sidebar-accent: rgb(38 38 38);
+    --sidebar-accent-foreground: rgb(250 250 250);
+    --sidebar-border: rgb(255 255 255 / 0.1);
+    --sidebar-ring: rgb(115 115 115);
+
+    --shadow-2xs: 0 1px 3px 0px rgb(0 0 0 / 0.05);
+    --shadow-xs:  0 1px 3px 0px rgb(0 0 0 / 0.05);
+    --shadow-sm:  0 1px 3px 0px rgb(0 0 0 / 0.10), 0 1px 2px -1px rgb(0 0 0 / 0.10);
+    --shadow:     0 1px 3px 0px rgb(0 0 0 / 0.10), 0 1px 2px -1px rgb(0 0 0 / 0.10);
+    --shadow-md:  0 1px 3px 0px rgb(0 0 0 / 0.10), 0 2px 4px -1px rgb(0 0 0 / 0.10);
+    --shadow-lg:  0 1px 3px 0px rgb(0 0 0 / 0.10), 0 4px 6px -1px rgb(0 0 0 / 0.10);
+    --shadow-xl:  0 1px 3px 0px rgb(0 0 0 / 0.10), 0 8px 10px -1px rgb(0 0 0 / 0.10);
+    --shadow-2xl: 0 1px 3px 0px rgb(0 0 0 / 0.25);
+
+    /* Override custom tokens for dark mode */
+    --color-bg:              rgb(10 10 10);
+    --color-surface:         rgb(23 23 23);
+    --color-surface-alt:     rgb(38 38 38);
+    --color-border:          rgb(255 255 255 / 0.1);
+    --color-border-strong:   rgb(255 255 255 / 0.2);
+    --color-text:            rgb(250 250 250);
+    --color-text-secondary:  rgb(200 198 196);
+    --color-text-muted:      rgb(161 161 161);
+    --color-focus:           rgb(100 149 200);
+    --focus-ring:            0 0 0 3px rgba(100, 149, 200, 0.5);
+}
+
+/* ── Tailwind v4 @theme inline mapping ───────────────────── */
+@theme inline {
+    --color-background:                var(--background);
+    --color-foreground:                var(--foreground);
+    --color-card:                      var(--card);
+    --color-card-foreground:           var(--card-foreground);
+    --color-popover:                   var(--popover);
+    --color-popover-foreground:        var(--popover-foreground);
+    --color-primary:                   var(--primary);
+    --color-primary-foreground:        var(--primary-foreground);
+    --color-secondary:                 var(--secondary);
+    --color-secondary-foreground:      var(--secondary-foreground);
+    --color-muted:                     var(--muted);
+    --color-muted-foreground:          var(--muted-foreground);
+    --color-accent:                    var(--accent);
+    --color-accent-foreground:         var(--accent-foreground);
+    --color-destructive:               var(--destructive);
+    --color-border:                    var(--border);
+    --color-input:                     var(--input);
+    --color-ring:                      var(--ring);
+    --color-chart-1:                   var(--chart-1);
+    --color-chart-2:                   var(--chart-2);
+    --color-chart-3:                   var(--chart-3);
+    --color-chart-4:                   var(--chart-4);
+    --color-chart-5:                   var(--chart-5);
+    --color-sidebar:                   var(--sidebar);
+    --color-sidebar-foreground:        var(--sidebar-foreground);
+    --color-sidebar-primary:           var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent:            var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border:            var(--sidebar-border);
+    --color-sidebar-ring:              var(--sidebar-ring);
+
+    --font-sans:  var(--font-sans);
+    --font-mono:  var(--font-mono);
+    --font-serif: var(--font-serif);
+
+    --radius-sm: calc(var(--radius) - 4px);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) + 4px);
+
+    --shadow-2xs: var(--shadow-2xs);
+    --shadow-xs:  var(--shadow-xs);
+    --shadow-sm:  var(--shadow-sm);
+    --shadow:     var(--shadow);
+    --shadow-md:  var(--shadow-md);
+    --shadow-lg:  var(--shadow-lg);
+    --shadow-xl:  var(--shadow-xl);
+    --shadow-2xl: var(--shadow-2xl);
+}
+
+/* ── Reset ───────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 /* ── Base ────────────────────────────────────────────────── */
@@ -132,6 +291,16 @@ body {
     min-height: 100vh;
 }
 
+/* ── Force Inter on all shadcn/ui buttons ────────────────── */
+/* shadcn Button renders as <button> with Tailwind utility classes.
+   --font-sans is already set to Inter above, so shadcn's
+   font-family: var(--font-sans) will resolve to Inter automatically.
+   This rule is a belt-and-suspenders fallback. */
+button,
+[role="button"] {
+    font-family: var(--font-body);
+}
+
 /* ── Accessibility: Focus ────────────────────────────────── */
 :focus-visible {
     outline: 3px solid var(--color-focus);
@@ -139,12 +308,11 @@ body {
     border-radius: var(--radius-sm);
 }
 
-/* Remove focus ring for mouse users, keep for keyboard */
 :focus:not(:focus-visible) {
     outline: none;
 }
 
-/* Skip to main content — visible on focus only */
+/* Skip to main content */
 .skip-link {
     position: absolute;
     top: -100%;
@@ -173,6 +341,12 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
     letter-spacing: -0.01em;
     text-wrap: balance;
+}
+
+/* Dark mode: lighten headings so navy remains legible */
+.dark h1, .dark h2, .dark h3,
+.dark h4, .dark h5, .dark h6 {
+    color: rgb(200 215 235);
 }
 
 h1 {
@@ -229,12 +403,9 @@ p + p {
     font-weight: 400;
 }
 
-.text-sm   { font-size: var(--text-sm); }
-.text-lg   { font-size: var(--text-lg); }
-.text-muted {
-    color: var(--color-text-muted);
-    /* ~5.5:1 on bg — AA compliant ✅ */
-}
+.text-sm    { font-size: var(--text-sm); }
+.text-lg    { font-size: var(--text-lg); }
+.text-muted { color: var(--color-text-muted); /* ~5.5:1 ✅ AA */ }
 
 /* ── Links ───────────────────────────────────────────────── */
 a {
@@ -255,14 +426,9 @@ a:visited {
     color: var(--color-primary);
 }
 
-/* Accent links — only for large/prominent text (AA compliance) */
+/* Accent links — use accent-dark for AA+ compliance on body text */
 .link-accent {
-    color: var(--color-accent-dark);
-    /* #2a8e39 on bg ~6.8:1 → AA+ ✅ */
-}
-
-.link-accent:hover {
-    color: var(--color-accent-dark);
+    color: var(--color-accent-dark); /* #2a8e39 ~6.8:1 ✅ AA+ */
 }
 
 /* ── Inline Elements ─────────────────────────────────────── */
@@ -282,7 +448,7 @@ mark {
 }
 
 code {
-    font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+    font-family: var(--font-mono);
     font-size: 0.9em;
     background-color: var(--color-surface-alt);
     color: var(--color-primary);
@@ -292,7 +458,7 @@ code {
 }
 
 pre {
-    font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+    font-family: var(--font-mono);
     font-size: var(--text-sm);
     background-color: var(--color-primary);
     color: #e8f0fc;
@@ -344,13 +510,8 @@ ul, ol {
     max-width: 68ch;
 }
 
-li + li {
-    margin-top: var(--space-2);
-}
-
-li::marker {
-    color: var(--color-primary);
-}
+li + li { margin-top: var(--space-2); }
+li::marker { color: var(--color-primary); }
 
 /* ── Layout Utilities ────────────────────────────────────── */
 .container {
@@ -360,29 +521,17 @@ li::marker {
     padding-inline: var(--space-6);
 }
 
-@media (min-width: 640px) {
-    .container { padding-inline: var(--space-8); }
-}
-
-@media (min-width: 1024px) {
-    .container { padding-inline: var(--space-12); }
-}
+@media (min-width: 640px)  { .container { padding-inline: var(--space-8); } }
+@media (min-width: 1024px) { .container { padding-inline: var(--space-12); } }
 
 .container-sm  { max-width: var(--container-sm);  margin-inline: auto; }
 .container-md  { max-width: var(--container-md);  margin-inline: auto; }
 .container-lg  { max-width: var(--container-lg);  margin-inline: auto; }
 
-/* ── Sectioning ──────────────────────────────────────────── */
-section {
-    padding-block: var(--space-16);
-}
+section { padding-block: var(--space-16); }
+article { max-width: var(--container-md); }
 
-article {
-    max-width: var(--container-md);
-}
-
-/* ── Buttons ─────────────────────────────────────────────── */
-button,
+/* ── Custom Buttons (non-shadcn) ─────────────────────────── */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -406,18 +555,15 @@ button,
     user-select: none;
 }
 
-button:active,
-.btn:active {
-    transform: translateY(1px);
-}
+.btn:active   { transform: translateY(1px); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
 
-/* Primary button — #134479 bg, white text: ~14:1 ✅ AAA */
+/* Primary — #134479 bg, white text: ~14:1 ✅ AAA */
 .btn-primary {
     background-color: var(--color-primary);
     color: var(--color-text-on-primary);
     border-color: var(--color-primary);
 }
-
 .btn-primary:hover {
     background-color: var(--color-primary-dark);
     border-color: var(--color-primary-dark);
@@ -426,14 +572,12 @@ button:active,
     text-decoration: none;
 }
 
-/* Accent button — #39B54B bg, white text: ~4.9:1 ✅ AA
-   Use for large/prominent CTAs only */
+/* Accent — #39B54B bg, white text: ~4.9:1 ✅ AA (large/CTA use only) */
 .btn-accent {
     background-color: var(--color-accent);
     color: var(--color-text-on-accent);
     border-color: var(--color-accent);
 }
-
 .btn-accent:hover {
     background-color: var(--color-accent-dark);
     border-color: var(--color-accent-dark);
@@ -442,40 +586,29 @@ button:active,
     text-decoration: none;
 }
 
-/* Outline button */
+/* Outline */
 .btn-outline {
     background-color: transparent;
     color: var(--color-primary);
     border-color: var(--color-primary);
 }
-
 .btn-outline:hover {
     background-color: var(--color-primary);
     color: var(--color-text-on-primary);
 }
 
-/* Ghost button */
+/* Ghost */
 .btn-ghost {
     background-color: transparent;
     color: var(--color-primary);
     border-color: transparent;
 }
-
 .btn-ghost:hover {
     background-color: rgba(19, 68, 121, 0.08);
 }
 
-/* Sizes */
 .btn-sm { font-size: var(--text-xs); padding: 0.6em 1.2em; }
-.btn-lg { font-size: var(--text-base); padding: 0.85em 2em; border-radius: var(--radius-lg); }
-
-/* Disabled */
-button:disabled,
-.btn:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-    pointer-events: none;
-}
+.btn-lg { font-size: var(--text-base); padding: 0.85em 2em; border-radius: var(--radius-xl); }
 
 /* ── Cards ───────────────────────────────────────────────── */
 .card {
@@ -487,13 +620,8 @@ button:disabled,
     transition: box-shadow var(--transition-base), transform var(--transition-base);
 }
 
-.card:hover {
-    box-shadow: var(--shadow-md);
-}
-
-.card-elevated {
-    box-shadow: var(--shadow-md);
-}
+.card:hover    { box-shadow: var(--shadow-md); }
+.card-elevated { box-shadow: var(--shadow-md); }
 
 .card-header {
     margin-bottom: var(--space-4);
@@ -509,9 +637,7 @@ button:disabled,
     line-height: var(--leading-tight);
 }
 
-.card-body p {
-    color: var(--color-text-secondary);
-}
+.card-body p { color: var(--color-text-secondary); }
 
 /* ── Navigation ──────────────────────────────────────────── */
 nav {
@@ -565,15 +691,11 @@ select {
 }
 
 input::placeholder,
-textarea::placeholder {
-    color: var(--color-text-muted);
-}
+textarea::placeholder { color: var(--color-text-muted); }
 
 input:hover,
 textarea:hover,
-select:hover {
-    border-color: var(--color-border-strong);
-}
+select:hover  { border-color: var(--color-border-strong); }
 
 input:focus,
 textarea:focus,
@@ -584,9 +706,7 @@ select:focus {
 }
 
 .field-error input,
-.field-error textarea {
-    border-color: #C0392B; /* ~5.9:1 on white ✅ AA */
-}
+.field-error textarea { border-color: #C0392B; }
 
 .field-error-message {
     font-size: var(--text-xs);
@@ -609,41 +729,16 @@ select:focus {
     line-height: 1;
 }
 
-/* Navy badge — white text ~14:1 ✅ AAA */
-.badge-primary {
-    background-color: var(--color-primary);
-    color: var(--color-text-on-primary);
-}
-
-/* Tinted badge — navy text on light bg — ✅ AAA */
-.badge-primary-soft {
-    background-color: rgba(19, 68, 121, 0.1);
-    color: var(--color-primary);
-}
-
-/* Green badge for large text/decorative — AA ✅ */
-.badge-accent {
-    background-color: var(--color-accent);
-    color: var(--color-text-on-accent);
-    /* Use at ≥14px bold or ≥18px regular for AA compliance */
-}
-
-.badge-accent-soft {
-    background-color: rgba(57, 181, 75, 0.12);
-    color: var(--color-accent-dark);
-    /* #2a8e39 on tinted bg ~6.5:1 ✅ AA+ */
-}
+.badge-primary      { background-color: var(--color-primary); color: var(--color-text-on-primary); }
+.badge-primary-soft { background-color: rgba(19, 68, 121, 0.1); color: var(--color-primary); }
+.badge-accent       { background-color: var(--color-accent); color: var(--color-text-on-accent); }
+.badge-accent-soft  { background-color: rgba(57, 181, 75, 0.12); color: var(--color-accent-dark); }
 
 /* ── Dividers ────────────────────────────────────────────── */
 hr {
     border: none;
     border-top: 1px solid var(--color-border);
     margin-block: var(--space-8);
-}
-
-.divider-accent {
-    border-color: var(--color-accent);
-    opacity: 0.4;
 }
 
 /* ── Tables ──────────────────────────────────────────────── */
@@ -654,9 +749,7 @@ table {
     font-size: var(--text-sm);
 }
 
-thead {
-    background-color: var(--color-primary);
-}
+thead { background-color: var(--color-primary); }
 
 th {
     font-weight: 600;
@@ -674,13 +767,8 @@ td {
     color: var(--color-text);
 }
 
-tr:last-child td {
-    border-bottom: none;
-}
-
-tbody tr:hover {
-    background-color: rgba(19, 68, 121, 0.03);
-}
+tr:last-child td { border-bottom: none; }
+tbody tr:hover   { background-color: rgba(19, 68, 121, 0.03); }
 
 /* ── Alerts / Callouts ───────────────────────────────────── */
 .alert {
@@ -693,60 +781,40 @@ tbody tr:hover {
     font-size: var(--text-sm);
 }
 
-.alert-info {
-    background-color: rgba(19, 68, 121, 0.07);
-    border-color: var(--color-primary);
-    color: var(--color-primary);
-}
-
-.alert-success {
-    background-color: rgba(57, 181, 75, 0.1);
-    border-color: var(--color-accent-dark);
-    color: #1e6b29; /* darker green ~8.5:1 ✅ AAA */
-}
-
-.alert-warning {
-    background-color: rgba(230, 150, 0, 0.1);
-    border-color: #a06800;
-    color: #7a4f00; /* ~7.2:1 ✅ AAA */
-}
-
-.alert-error {
-    background-color: rgba(192, 57, 43, 0.1);
-    border-color: #C0392B;
-    color: #922b21; /* ~7.5:1 ✅ AAA */
-}
+.alert-info    { background-color: rgba(19, 68, 121, 0.07);  border-color: var(--color-primary);      color: var(--color-primary); }
+.alert-success { background-color: rgba(57, 181, 75, 0.1);   border-color: var(--color-accent-dark);  color: #1e6b29; /* ~8.5:1 ✅ AAA */ }
+.alert-warning { background-color: rgba(230, 150, 0, 0.1);   border-color: #a06800;                   color: #7a4f00; /* ~7.2:1 ✅ AAA */ }
+.alert-error   { background-color: rgba(192, 57, 43, 0.1);   border-color: #C0392B;                   color: #922b21; /* ~7.5:1 ✅ AAA */ }
 
 /* ── Utility: Spacing ────────────────────────────────────── */
-.mt-auto  { margin-top: auto; }
-.mb-auto  { margin-bottom: auto; }
-.mx-auto  { margin-inline: auto; }
-.mt-4     { margin-top: var(--space-4); }
-.mt-8     { margin-top: var(--space-8); }
-.mt-16    { margin-top: var(--space-16); }
-.mb-4     { margin-bottom: var(--space-4); }
-.mb-8     { margin-bottom: var(--space-8); }
-.p-4      { padding: var(--space-4); }
-.p-6      { padding: var(--space-6); }
-.p-8      { padding: var(--space-8); }
+.mt-auto { margin-top: auto; }
+.mb-auto { margin-bottom: auto; }
+.mx-auto { margin-inline: auto; }
+.mt-4    { margin-top: var(--space-4); }
+.mt-8    { margin-top: var(--space-8); }
+.mt-16   { margin-top: var(--space-16); }
+.mb-4    { margin-bottom: var(--space-4); }
+.mb-8    { margin-bottom: var(--space-8); }
+.p-4     { padding: var(--space-4); }
+.p-6     { padding: var(--space-6); }
+.p-8     { padding: var(--space-8); }
 
 /* ── Utility: Colors ─────────────────────────────────────── */
-.text-primary   { color: var(--color-primary); }
-.text-accent    { color: var(--color-accent-dark); }
-/* Using accent-dark (#2a8e39) for text to ensure AA+ compliance */
-.bg-primary     { background-color: var(--color-primary); }
-.bg-accent      { background-color: var(--color-accent); }
-.bg-surface     { background-color: var(--color-surface); }
+.text-primary { color: var(--color-primary); }
+.text-accent  { color: var(--color-accent-dark); }
+.bg-primary   { background-color: var(--color-primary); }
+.bg-accent    { background-color: var(--color-accent); }
+.bg-surface   { background-color: var(--color-surface); }
 
 /* ── Utility: Display ────────────────────────────────────── */
-.flex        { display: flex; }
-.flex-col    { flex-direction: column; }
-.items-center{ align-items: center; }
+.flex            { display: flex; }
+.flex-col        { flex-direction: column; }
+.items-center    { align-items: center; }
 .justify-between { justify-content: space-between; }
-.gap-4       { gap: var(--space-4); }
-.gap-8       { gap: var(--space-8); }
-.grid        { display: grid; }
-.hidden      { display: none; }
+.gap-4           { gap: var(--space-4); }
+.gap-8           { gap: var(--space-8); }
+.grid            { display: grid; }
+.hidden          { display: none; }
 .sr-only {
     position: absolute;
     width: 1px;
@@ -761,9 +829,7 @@ tbody tr:hover {
 
 /* ── Reduced Motion ──────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
+    *, *::before, *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
@@ -773,40 +839,15 @@ tbody tr:hover {
 
 /* ── High Contrast Mode ──────────────────────────────────── */
 @media (forced-colors: active) {
-    .btn-primary,
-    .btn-accent {
-        border: 2px solid ButtonText;
-    }
-
-    :focus-visible {
-        outline: 3px solid Highlight;
-    }
+    .btn-primary, .btn-accent { border: 2px solid ButtonText; }
+    :focus-visible { outline: 3px solid Highlight; }
 }
 
 /* ── Print ───────────────────────────────────────────────── */
 @media print {
-    body {
-        background: white;
-        color: black;
-        font-size: 12pt;
-    }
-
-    h1, h2, h3, h4, h5, h6 {
-        color: black;
-        page-break-after: avoid;
-    }
-
-    a {
-        color: black;
-        text-decoration: underline;
-    }
-
-    a[href]::after {
-        content: " (" attr(href) ")";
-        font-size: 0.8em;
-    }
-
-    .btn, nav, .no-print {
-        display: none;
-    }
+    body { background: white; color: black; font-size: 12pt; }
+    h1, h2, h3, h4, h5, h6 { color: black; page-break-after: avoid; }
+    a { color: black; text-decoration: underline; }
+    a[href]::after { content: " (" attr(href) ")"; font-size: 0.8em; }
+    .btn, nav, .no-print { display: none; }
 }
