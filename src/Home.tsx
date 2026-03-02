@@ -106,11 +106,8 @@ function Home() {
                     <div className="w-full max-w-xl bg-white/10 rounded-xl px-6! py-5! text-left! flex flex-col gap-2">
                         <p className="text-primary-foreground! text-xs font-bold uppercase tracking-widest mb-1">Testing
                             Sessions</p>
-                        <p className="text-primary-foreground! text-base leading-relaxed">March 20, 2026 at 5:30
-                            PM <span
-                                className="text-primary-foreground/70 text-sm">(30 minutes before Open Mic Night)</span>
-                        </p>
-                        <p className="text-primary-foreground! text-base">March 21, 2026 from 2–7 PM</p>
+                        <p className="text-primary-foreground! text-base leading-relaxed">March 19, 2026 at 5:00pm-7:00pm</p>
+                        <p className="text-primary-foreground! text-base">March 21, 2026 from 11am–2pm</p>
                     </div>
                     <div className="w-full max-w-xl bg-white/10 rounded-xl px-6! py-4! text-left">
                         <p className="text-primary-foreground! text-xs font-bold uppercase tracking-widest mb-1">Questions?</p>
