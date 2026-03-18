@@ -107,13 +107,20 @@ function Home() {
                         <p className="text-primary-foreground! text-xs font-bold uppercase tracking-widest mb-1">Testing
                             Sessions</p>
                         <p className="text-primary-foreground! text-base leading-relaxed">March 19, 2026 at 5:00pm-7:00pm</p>
-                        <p className="text-primary-foreground! text-base">March 21, 2026 from 11am–2pm</p>
+                        <p className="text-primary-foreground! text-base">March 21, 2026 from 11:00am–2:00pm</p>
                     </div>
                     <div className="w-full max-w-xl bg-white/10 rounded-xl px-6! py-4! text-left">
                         <p className="text-primary-foreground! text-xs font-bold uppercase tracking-widest mb-1">Questions?</p>
                         <a href="mailto:swissvalescrapbook@gmail.com"
-                           className="text-primary-foreground! md:text-lg! text-sm! underline underline-offset-4 hover:text-secondary transition-colors duration-200">
+                           className="text-primary-foreground! md:text-lg! text-xs! underline underline-offset-4 hover:text-secondary transition-colors duration-200">
                             swissvalescrapbook@gmail.com
+                        </a>
+                    </div>
+                    <div className="w-full max-w-xl bg-white/10 rounded-xl px-6! py-4! text-left">
+                        <p className="text-primary-foreground! text-xs font-bold uppercase tracking-widest mb-1">Interested in helping out with future sessions?</p>
+                        <a href="https://forms.gle/24V1gw7SZPbvGXnE7" target="_blank"
+                           className="text-primary-foreground! md:text-lg! text-sm! text-wrap underline underline-offset-4 hover:text-secondary transition-colors duration-200">
+                            Fill out this form
                         </a>
                     </div>
                 </div>
