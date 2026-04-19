@@ -1,9 +1,9 @@
-import './App.css'
+import '@/App.css'
 import {
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+} from "@/components/ui/collapsible.tsx"
 import {ChevronDown} from 'lucide-react';
 import {Button} from '@/components/ui/button.tsx'
 
@@ -38,7 +38,7 @@ const faqs = [
     },
 ]
 
-function Home() {
+function FAQ() {
     return (
         <div className="min-h-screen px-4! py-16! sm:px-8! md:px-16! lg:px-32!">
 
@@ -130,4 +130,4 @@ function Home() {
     )
 }
 
-export default Home
+export default FAQ
