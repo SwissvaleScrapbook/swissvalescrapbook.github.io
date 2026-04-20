@@ -1,4 +1,5 @@
 import '@/App.css'
+import clip from '@/assets/Playthrough.mov'
 
 const cardP = "text-base! leading-relaxed! text-primary-foreground! max-w-none! text-left!"
 
@@ -12,10 +13,13 @@ export default function LandingPage() {
                     Swissvale Scrapbook
                 </h1>
 
-                {/* GIF placeholder */}
-                <div className="w-full max-w-md mx-auto h-52 rounded-xl bg-muted border border-border flex items-center justify-center mb-8! shadow-sm">
-                    <span className="text-muted-foreground text-sm">App Preview GIF</span>
+                <div className="flex items-center justify-center w-full my-8!">
+                    <video width="320" height="240" controls>
+                        <source src={clip} type="video/mov"/>
+                        Your browser does not support the video tag.
+                    </video>
                 </div>
+
 
                 <p className="text-lg! text-foreground! leading-relaxed! max-w-none!">
                     A mobile app that guides you through Swissvale—either in person or virtually. As you explore, you'll discover oral histories from residents about local sites and vacant lots throughout the community.
